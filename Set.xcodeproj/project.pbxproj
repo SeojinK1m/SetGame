@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BF11516A2926388F007883C0 /* SetGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1151692926388F007883C0 /* SetGameViewModel.swift */; };
 		BF11516C292639D5007883C0 /* SetGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF11516B292639D5007883C0 /* SetGameModel.swift */; };
+		BF2551502956E7E700FDCF8C /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF25514F2956E7E700FDCF8C /* Cardify.swift */; };
 		BFCAFD412924C1DD00B5679E /* SetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCAFD402924C1DD00B5679E /* SetApp.swift */; };
 		BFCAFD432924C1DD00B5679E /* SetGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCAFD422924C1DD00B5679E /* SetGameView.swift */; };
 		BFCAFD452924C1DF00B5679E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFCAFD442924C1DF00B5679E /* Assets.xcassets */; };
@@ -20,6 +21,7 @@
 /* Begin PBXFileReference section */
 		BF1151692926388F007883C0 /* SetGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameViewModel.swift; sourceTree = "<group>"; };
 		BF11516B292639D5007883C0 /* SetGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameModel.swift; sourceTree = "<group>"; };
+		BF25514F2956E7E700FDCF8C /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
 		BFCAFD3D2924C1DD00B5679E /* Set.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Set.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFCAFD402924C1DD00B5679E /* SetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetApp.swift; sourceTree = "<group>"; };
 		BFCAFD422924C1DD00B5679E /* SetGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameView.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				BFCAFD442924C1DF00B5679E /* Assets.xcassets */,
+				BF25514F2956E7E700FDCF8C /* Cardify.swift */,
 				BFCAFD402924C1DD00B5679E /* SetApp.swift */,
 				BFCAFD502924C7B600B5679E /* CardShapes.swift */,
 				BFCAFD422924C1DD00B5679E /* SetGameView.swift */,
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFCAFD532924E04A00B5679E /* AspectVGrid.swift in Sources */,
+				BF2551502956E7E700FDCF8C /* Cardify.swift in Sources */,
 				BFCAFD512924C7B600B5679E /* CardShapes.swift in Sources */,
 				BF11516C292639D5007883C0 /* SetGameModel.swift in Sources */,
 				BFCAFD432924C1DD00B5679E /* SetGameView.swift in Sources */,

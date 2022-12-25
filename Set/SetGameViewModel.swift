@@ -11,10 +11,10 @@ import Foundation
 class SetGameViewModel: ObservableObject {
     @Published private var model: SetGameModel
     var cards: Array<SetGameModel.Card> {
-        return Array(model.cards[0 ..< model.cardsInPlay])
+        model.cards
     }
-    var noMoreCardsInDeck: Bool {
-        model.noMoreCardsInDeck
+    var matchedCards: Array<SetGameModel.Card> {
+        model.matchedCards
     }
     var score: Int {
         model.score
@@ -25,8 +25,8 @@ class SetGameViewModel: ObservableObject {
     }
     
     //  MARK: - Intent(s)
-    func dealMoreCards() {
-        model.dealMoreCards()
+    func dealMoreCards(_ cards: Array<SetGameModel.Card>) {
+        model.dealMoreCards(cardsAlreadyDealt: cards)
     }
     
     func choose(_ card : SetGameModel.Card) {
@@ -37,9 +37,9 @@ class SetGameViewModel: ObservableObject {
         model = SetGameModel()
     }
     
-    func getHint() {
-        if let _ = model.possibleSet {
-            model.showHint()
+    func getHint(_ cards: Array<SetGameModel.Card>) {
+        if let hint = model.getHint(among: cards) {
+            model.showHint(hint)
         }
     }
 }

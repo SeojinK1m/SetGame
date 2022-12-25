@@ -9,7 +9,7 @@ import Foundation
 
 struct SetGameModel {
     private(set) var cards: Array<Card>
-    private(set) var cardsInPlay: Int
+    private(set) var matchedCards: Array<Card>
     private(set) var indicesOfChosenCards: Set<Int> {
         get { Set(cards.indices.filter({cards[$0].selected})) }
         set {  }
@@ -21,21 +21,12 @@ struct SetGameModel {
     private var numberOfChosenAndRightCards: Int {
         cards.indices.filter({cards[$0].chosenAndRight}).count
     }
-    var noMoreCardsInDeck: Bool {
-        cardsInPlay == cards.count
-    }
     private(set) var score: Int
-    var possibleSet: Set<Int>? {
-        if let ps = findSet() {
-            return ps
-        }
-        return nil
-    }
     
     init() {
         score = 0
         cards = []
-        cardsInPlay = 12
+        matchedCards = []
         indicesOfChosenCards = []
         for color in ShapeColor.allCases {
             for shape in ShapeType.allCases {
@@ -56,41 +47,46 @@ struct SetGameModel {
         cards.shuffle()
     }
     
-    mutating func dealMoreCards() {
+    mutating func dealMoreCards(cardsAlreadyDealt: Array<SetGameModel.Card>) {
         if isValidSet {
             var setOfSelectedCardIDs = Set<Int>()
             for index in indicesOfChosenCards {
                 setOfSelectedCardIDs.insert(cards[index].id)
+                cards[index].selected.toggle()
+                matchedCards.append(cards[index])
             }
             cards = cards.filter {
                 !setOfSelectedCardIDs.contains($0.id)
             }
         } else {
-            if let _ = possibleSet {
+            if let _ = getHint(among: cardsAlreadyDealt) {
                 score -= 3
             }
-            cardsInPlay = cardsInPlay + 3 > cards.count ? cardsInPlay : cardsInPlay + 3
         }
     }
     
     mutating func choose(_ card: Card) {
+        for index in cards.indices {
+            cards[index].hint = false
+        }
         if let indexOfCard = cards.firstIndex(where: {$0.id == card.id}) {
             //  check if selected card is already selected
             var numberOfSelectedCards = indicesOfChosenCards.count
             if !indicesOfChosenCards.contains(indexOfCard) {
                 if numberOfSelectedCards == 3 {
                     if isValidSet {
-                        var setOfSelectedCardIDs = Set<Int>()
                         for index in indicesOfChosenCards {
-                            setOfSelectedCardIDs.insert(cards[index].id)
-                        }
-                        cards = cards.filter {
-                            !setOfSelectedCardIDs.contains($0.id)
+                            cards[index].selected.toggle()
+                            matchedCards.append(cards[index])
                         }
                     } else {
                         resetCards(indicesOfCardsToToggle: indicesOfChosenCards)
                     }
                     cards[indexOfCard].selected.toggle()
+                    cards = cards.filter {
+                        !matchedCards.contains($0)
+                    }
+                    
                 } else {
                     cards[indexOfCard].selected.toggle()
                     numberOfSelectedCards = indicesOfChosenCards.count
@@ -119,7 +115,6 @@ struct SetGameModel {
                 }
             }
         }
-        cardsInPlay = min(cardsInPlay, cards.count)
     }
     
     func isValidSetFunction(indicesOfChosenCards: Set<Int>) -> Bool {
@@ -195,13 +190,18 @@ struct SetGameModel {
         }
     }
     
-    func findSet() -> Set<Int>? {
-        for i in 0..<cardsInPlay {
-            for j in i+1..<cardsInPlay {
-                for k in j+1..<cardsInPlay {
-                    let tempSet: Set = [i,j,k]
-                    if isValidSetFunction(indicesOfChosenCards: tempSet) {
-                        return tempSet
+    mutating func getHint(among: Array<SetGameModel.Card>) -> Set<Int>? {
+        let filteredAmong = among.filter{ card in
+            !matchedCards.contains(card)
+        }
+        for i in filteredAmong.indices {
+            for j in filteredAmong.indices {
+                for k in filteredAmong.indices {
+                    if(i != j && j != k && i != k) {
+                        let s = Set<Int>([i,j,k])
+                        if isValidSetFunction(indicesOfChosenCards: s) {
+                            return s
+                        }
                     }
                 }
             }
@@ -209,13 +209,12 @@ struct SetGameModel {
         return nil
     }
     
-    //  only call when possible set is for sure not nil
-    mutating func showHint() {
-        for index in possibleSet! {
+    mutating func showHint(_ hint: Set<Int>) {
+        for index in hint {
             cards[index].hint = true
         }
     }
-    
+
     struct Card: Identifiable, Hashable {
         let id: Int
         let shapeCount: Int
